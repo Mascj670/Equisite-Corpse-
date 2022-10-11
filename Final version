@@ -1,0 +1,288 @@
+let canv;
+let R = 123;
+let G = 63;
+let B = 0;
+let moveL;
+let moveR;
+
+let x = 40;
+
+//Laser variables 
+
+let LXL = 120; //Laser Y Left 
+let LXR = 240; //Laser X Right
+
+function setup() {
+  
+  canv = createCanvas(400,600);
+  moveL=0;
+  moveR=0;
+}
+
+function draw() {
+  
+  background(179, 232, 255);
+  
+  // Calling Functions 
+  
+  // Legs
+  
+  push();
+  
+  scale(0.9, 0.9);
+  translate(width/2 - 190, height/2 - 190);
+  legs();
+
+  pop();
+  
+  // bear
+  
+  push();
+  
+  translate(width/2 - 200, height/20 - 70);
+  scale(0.9, 0.9);
+  bear();
+  
+  pop();
+  
+  // Body
+  push();
+  
+  strokeWeight(1.7);
+  map(width,0,400,40,360);
+  translate(width/2, height/3+75); 
+  Body(-40,0,x);
+  
+  pop();
+  
+  
+  //Laser Eyes
+  push();
+  
+  scale(0.9, 0.9);
+  translate(width/2 - 200, height/20 - 70);
+  lasereyes(LXL, 158, 30, 7, 20, 255, 0, 0);  // x,y,w,h,rounded edges,r, g, b -Right eyes
+  lasereyes(LXR, 158, 30, 7, 20, 0, 0, 255); // x,y,w,h,rounded edges,r, g, b -Left eyes
+
+  
+  pop(); 
+  
+  // This allows me to initiate the randomization of the variables when the mouse is pressed/clicked
+  canv.mousePressed(randomize);
+  
+}
+
+//Function Legs 
+function legs(){
+  
+  //Right leg 
+  push();
+  
+  fill(R,G,B);
+  stroke(255);
+  strokeWeight(1.7);
+  ellipse(130, 40+400, 80, 80);//big circle
+  ellipse(124, 48+400, 60, 60); //small circle
+  quad(155, 60+400,115, 60+400,135-moveR,115+400,175-moveR,115+400);//mid leg upper
+  quad(155, 60+400,120, 60+400,140-moveR,115+400,175-moveR,115+400);//line in mid leg upper
+  quad(153-moveR,115+400,175-moveR,115+400,163-moveR,155+400,138-moveR,155+400);//mid leg lower
+  rect(160-moveR, 109+400, 7, 12);//mid junction
+  rect(115-moveR, 141+400, 35, 14)//feet 1 Left-right
+  rect(156-moveR, 145+400, 22, 10)//feet 3
+  rect(145-moveR, 149+400, 16, 6)//feet 2
+  
+  pop();
+  
+  //Left Leg
+  push();
+  
+  fill(R,G,B);
+  stroke(255);
+  strokeWeight(1.7);
+  ellipse(240, 30+400, 60, 60); //big circle
+  ellipse(236, 36+400, 46, 46); //small circle
+  quad(255, 50+400, 230, 50+400, 245-moveL,80+400, 270-moveL,80+400); //mid leg upper
+  quad(255, 50+400, 234, 50+400, 249-moveL,80+400, 270-moveL,80+400); //line in mid leg upper
+  quad(260-moveL,105+400,270-moveL,80+400,255-moveL,80+400,245-moveL,105+400); //mid leg lower
+  rect(259-moveL,75+400, 7/1.5, 12/1.5); //mid junction
+  rect(233-moveL, 96+400, 19, 9) //feet 1 Left-right
+  rect(256-moveL, 99+400, 13, 6) //feet 3
+  rect(249-moveL, 102+400, 11, 3) //feet 2 mid
+  
+  pop();
+  
+}
+  
+
+// randomize the color
+function randomize(){
+  
+  R = random(0,255);
+  G = random(0,255);
+  B = random(0,255);
+  moveL = random(0,25);
+  moveR = random(0,15);
+  
+}
+
+// Function bear
+function bear(){
+  
+  
+  // ears
+  push();
+  
+  strokeWeight(15);
+  stroke(123, 63, 0);
+  fill(193, 154, 107);
+  circle(100,95,80);
+  circle(295,95,80);
+  
+  pop();
+  
+  push();
+  
+  noStroke();
+  fill(123, 63, 0);
+  circle(200,200,250);
+  fill(193, 154, 107);
+  ellipse(200,260,140,110);
+  
+  pop();
+  
+  push();
+  
+  //Iris
+  noStroke();
+  fill(0);
+  ellipse(140,170,50,50);
+  ellipse(260,170,50,50);
+  
+  //Pupil 
+  fill(255);
+  circle(155, 165, 10);
+  circle(275, 165, 10);
+  
+  // Pink Cheeks
+  fill(199, 103, 103);
+  ellipse(125, 220, 35, 25);
+  ellipse(275, 220, 35, 25);
+  
+  pop();
+    
+  // nose 
+  push();
+  
+  fill(0);
+  ellipse(200,250,50,30);
+  rectMode(CENTER);
+  rect(200, 270, 5, 30);
+  
+  noFill();
+  strokeWeight(5);
+  stroke(0);
+  arc(200, 260, 80, 55, 0, PI );
+  
+  pop();
+  
+}
+
+
+
+// Function Body
+function Body(pixelX, pixelY, pixelSize){
+  
+  fill(150);
+  stroke(220);
+  rectMode(CENTER);
+  
+  //layer 1
+  
+  rect(pixelX-2*x,pixelY,x);
+  push();
+  fill(123, 63, 0);        //skin
+  rect(pixelX-x,pixelY,x);
+  rect(pixelX, pixelY,x);
+  rect(pixelX+x,pixelY,x);
+  rect(pixelX+2*x,pixelY,x);
+  pop();
+  rect(pixelX+3*x,pixelY,x);
+  
+  //layer2
+  
+  rect(pixelX-x,pixelY+x,x);
+  rect(pixelX,pixelY+x,x);
+  rect(pixelX+x,pixelY+x,x);
+  rect(pixelX+2*x,pixelY+x,x);
+  push();
+  fill(100);
+  rect(pixelX-2*x,pixelY+x,x);
+  rect(pixelX+3*x,pixelY+x,x);
+  pop();
+  rect(pixelX+4*x,pixelY+x,x);
+  
+  //layer3
+  
+  rect(pixelX-x,pixelY+2*x,x);
+  rect(pixelX,pixelY+2*x,x);
+  rect(pixelX+x,pixelY+2*x,x);
+  rect(pixelX+2*x,pixelY+2*x,x);
+  push();
+  fill(100);
+  rect(pixelX-2*x,pixelY+2*x,x);
+
+  pop();
+  rect(pixelX+4*x,pixelY+2*x,x);
+  
+  //layer4
+
+  rect(pixelX,pixelY+3*x,x);
+  rect(pixelX+x,pixelY+3*x,x);
+  rect(pixelX+3*x,pixelY+3*x,x);
+  push();
+  fill(123, 63, 0);             //skin
+  rect(pixelX+2*x,pixelY+3*x,x);
+  pop();
+  push();
+  fill(100);
+  rect(pixelX-2*x,pixelY+3*x,x);
+  pop();
+  rect(pixelX+4*x,pixelY+3*x,x);
+  
+  //layer5
+  
+  fill(123, 63, 0);               //skin
+  rect(pixelX-2*x,pixelY+4*x,x);
+  push();
+  fill(150);
+  rect(pixelX-x,pixelY+4*x,x); 
+  rect(pixelX,pixelY+4*x,x);
+  rect(pixelX+x,pixelY+4*x,x);
+  rect(pixelX+2*x,pixelY+4*x,x);
+  pop();
+  
+}
+
+function lasereyes(xPos,yPos, w, h, re,r1,g1,b1){ 
+  
+  if (keyIsPressed === true && keyCode == 32 ) { 
+    
+    
+      noStroke();
+      fill(r1,g1,b1);
+      rect(xPos,yPos,w,h,re,r1,g1,b1);// re = rounded edge 
+    
+      LXL -= 10;
+      LXR -= 10;
+    
+      if(LXL < 0){
+          LXL = 120; 
+        }
+
+      if(LXR < 0){
+          LXR = 240;          
+        }
+  }  
+ 
+}
+ 
